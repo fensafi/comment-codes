@@ -1,0 +1,19 @@
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy requirements.txt first to install dependencies
+COPY requirements.txt /app/
+
+# Install dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the web_interface.py file
+COPY web_interface.py /app/
+
+# Install specific dependencies for FastAPI and Uvicorn
+RUN pip install fastapi uvicorn
+
+# Set the command to run the FastAPI web interface
+CMD ["uvicorn", "web_interface:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,0 +1,19 @@
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt file first (to leverage Docker cache for dependencies)
+COPY requirements.txt /app/
+
+# Install dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Now copy the client.py file
+COPY client.py /app/
+
+# Install any additional dependencies (like requests)
+RUN pip install requests
+
+# Run the client application
+CMD ["python", "client.py"]

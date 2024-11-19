@@ -1,0 +1,38 @@
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: server
+    ports:
+      - "17000:17000"
+    networks:
+      - code_network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: web_interface
+    ports:
+      - "8000:8000"
+    depends_on:
+      - server
+    networks:
+      - code_network
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client
+    depends_on:
+      - server
+      - web
+    networks:
+      - code_network
+
+networks:
+  code_network:
+    driver: bridge
